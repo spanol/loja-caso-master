@@ -57,6 +57,7 @@ function layout({ titulo, corpo, largura = '720px' }) {
   .tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:20px;}
   .tag.wait{background:var(--gold-soft); color:var(--gold-strong);}
   .tag.review{background:var(--gold-soft); color:var(--gold-strong);}
+  .tag.update{background:var(--accent-soft); color:var(--accent); margin-bottom:10px;}
   .tag.ok{background:var(--ok-soft); color:var(--ok);}
   .tag.no{background:var(--accent-soft); color:var(--accent);}
   table{width:100%; border-collapse:collapse; font-size:.87rem;}
@@ -79,8 +80,10 @@ function paginaInicial() {
       (p) => `
     <div class="card">
       <div class="eyebrow">Tier ${p.tier}</div>
+      ${p.atualizacoes ? '<div class="tag update">Recebe as novidades da semana</div>' : ''}
       <h2>${escapeHtml(p.nome)}</h2>
       <p class="muted">${escapeHtml(p.resumo)}</p>
+      ${p.atualizacoes ? '<p class="muted" style="font-size:.82rem;">Inclui os novos documentos e desenvolvimentos do caso conforme saem do sigilo ao longo da proxima semana, sem custo adicional.</p>' : ''}
       <p class="price">${fmtBRL(p.preco)}</p>
       <a class="btn" href="/checkout/${p.tier}">Comprar por Pix</a>
     </div>`
@@ -93,6 +96,10 @@ function paginaInicial() {
       <div class="eyebrow">Dossie extraoficial</div>
       <h1>Caso Master: o mapa completo do processo</h1>
       <p class="muted">Reconstruimos a rede de atores, a linha do tempo e as ramificacoes do inquerito do Banco Master a partir da leitura integral de 467 documentos publicos dos dois processos em curso no STF. Escolha o pacote que faz sentido para voce.</p>
+      <div class="card" style="border-left:3px solid var(--accent); background:var(--accent-soft);">
+        <div class="eyebrow">Atualizacao de 11/09/2026</div>
+        <p class="muted" style="color:var(--text);">O presidente do STF, Edson Fachin, forcou a abertura do sigilo no processo: um relatorio da PF revela contatos entre Daniel Vorcaro e um numero salvo como "Alexandre de Moraes Brasilia", alem de um contrato de R$ 131 milhoes com o escritorio da esposa do ministro. Julgamento em plenario previsto para 15/09/2026. Quem compra o plano intermediario ou o acervo completo recebe as atualizacoes sobre esses novos desdobramentos ao longo da proxima semana.</p>
+      </div>
       ${cards}
       <footer>Pagamento via Pix direto para o vendedor. Apos o envio do comprovante, a liberacao do download e conferida manualmente e costuma sair em poucas horas.</footer>
     `,
