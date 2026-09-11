@@ -1,0 +1,25 @@
+services:
+  loja-caso-master:
+    build: .
+    container_name: loja-caso-master
+    restart: unless-stopped
+    ports:
+      # BIND_ADDR default 0.0.0.0 (todas as interfaces). Em servidores com
+      # varios serviços expostos, defina BIND_ADDR=<ip da tailnet> no .env
+      # para publicar so nessa interface, como os demais containers do host.
+      - "${BIND_ADDR:-0.0.0.0}:${PORT:-3000}:3000"
+    env_file:
+      - .env
+    volumes:
+      # Coloque aqui os 3 arquivos do produto (veja README.md):
+      #   data/files/tier1-dossie.pdf
+      #   data/files/tier2-documentos-chave.zip
+      #   data/files/tier3-processo-completo.zip
+      - ./data/files:/app/data/files
+      # Comprovantes enviados pelos compradores e o banco de pedidos (db.json).
+      - ./data/uploads:/app/data/uploads
+      - ./data/db:/app/data/db
+    environment:
+      - DB_PATH=/app/data/db/db.json
+      - FILES_DIR=/app/data/files
+      - UPLOADS_DIR=/app/data/uploads

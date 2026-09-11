@@ -1,0 +1,22 @@
+{
+  "name": "loja-caso-master",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Loja low ticket para o dossie Caso Master, com checkout Pix estatico e liberacao manual de download.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "overrides": {
+    "qs": "^6.16.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.0.0",
+    "qrcode": "^1.5.3",
+    "dotenv": "^16.4.5",
+    "nodemailer": "^10.0.7",
+    "express-basic-auth": "^1.2.1"
+  }
+}
