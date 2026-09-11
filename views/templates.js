@@ -16,13 +16,39 @@ function fmtData(iso) {
   return new Date(iso).toLocaleString('pt-BR');
 }
 
-function layout({ titulo, corpo, largura = '720px' }) {
+const GTM_ID = 'GTM-PDKWVPMX';
+const WHATSAPP_NUMBER = '5513991726826';
+const DESCRICAO_PADRAO =
+  'Dossie completo do Caso Master: rede de atores, linha do tempo e documentos publicos dos processos Pet 15556/DF e Rcl 88121/DF em curso no STF.';
+
+function layout({ titulo, corpo, largura = '720px', descricao, noindex = false, caminho = '/' }) {
+  const desc = descricao || DESCRICAO_PADRAO;
+  const urlCanonica = `${config.urlBase}${caminho}`;
+  const ogImage = `${config.urlBase}/og-image.jpg`;
   return `<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(titulo)}</title>
+<meta name="description" content="${escapeHtml(desc)}">
+${noindex ? '<meta name="robots" content="noindex,nofollow">\n' : ''}<link rel="canonical" href="${urlCanonica}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Caso Master">
+<meta property="og:title" content="${escapeHtml(titulo)}">
+<meta property="og:description" content="${escapeHtml(desc)}">
+<meta property="og:url" content="${urlCanonica}">
+<meta property="og:image" content="${ogImage}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${escapeHtml(titulo)}">
+<meta name="twitter:description" content="${escapeHtml(desc)}">
+<meta name="twitter:image" content="${ogImage}">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -72,10 +98,17 @@ function layout({ titulo, corpo, largura = '720px' }) {
     color:var(--accent); border:2px double var(--accent); padding:8px 14px; border-radius:3px;
     background:var(--accent-soft); display:inline-block; transform:rotate(-2deg); margin-top:18px;
   }
+  .whatsapp-float{
+    position:fixed; right:18px; bottom:18px; z-index:40; display:flex; align-items:center; gap:8px;
+    background:#25D366; color:#0b1a10; font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:.85rem;
+    padding:12px 16px; border-radius:999px; text-decoration:none; box-shadow:0 4px 16px rgba(0,0,0,.35);
+  }
 </style>
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="wrap">${corpo}</div>
+<a class="whatsapp-float" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Oi! Tenho uma duvida sobre o Caso Master.')}" target="_blank" rel="noopener">Duvidas? Fale no WhatsApp</a>
 </body>
 </html>`;
 }
@@ -99,6 +132,9 @@ function paginaInicial() {
   return layout({
     titulo: 'Caso Master, o dossie',
     largura: '760px',
+    caminho: '/',
+    descricao:
+      'Reconstruimos a rede de atores, a linha do tempo e as ramificacoes do inquerito do Banco Master a partir de 467 documentos publicos dos processos Pet 15556/DF e Rcl 88121/DF no STF.',
     corpo: `
       <div class="hero">
         <div class="eyebrow" style="display:flex;">STF &middot; Pet 15556/DF &amp; Rcl 88121/DF</div>
@@ -119,6 +155,8 @@ function paginaInicial() {
 function paginaCheckout(produto, erro) {
   return layout({
     titulo: `Comprar: ${produto.nome}`,
+    caminho: `/checkout/${produto.tier}`,
+    noindex: true,
     corpo: `
       <div class="eyebrow">Tier ${produto.tier}</div>
       <h1>${escapeHtml(produto.nome)}</h1>
@@ -176,7 +214,8 @@ function paginaPedido(pedido, produto, qrDataUrl, payload) {
       <div class="card">
         <h2>Recebemos seu comprovante</h2>
         <p class="muted">Assim que o pagamento for conferido, o link de download aparece nesta mesma pagina e tambem e enviado para <b>${escapeHtml(pedido.contato)}</b> quando for um e-mail. Pode deixar esta aba salva ou voltar aqui mais tarde.</p>
-      </div>`;
+      </div>
+      <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'comprovante_enviado',tier:${Number(pedido.tier)},valor:${Number(pedido.valor)}});</script>`;
   } else if (pedido.status === 'liberado') {
     miolo = `
       <div class="card">
@@ -194,6 +233,8 @@ function paginaPedido(pedido, produto, qrDataUrl, payload) {
 
   return layout({
     titulo: `Pedido ${pedido.id}`,
+    caminho: `/pedido/${pedido.id}`,
+    noindex: true,
     corpo: `
       <div class="eyebrow">Pedido <span class="mono">${pedido.id}</span></div>
       <h1>${escapeHtml(produto.nome)}</h1>
@@ -239,6 +280,8 @@ function paginaAdmin(pedidos) {
   return layout({
     titulo: 'Painel, Caso Master',
     largura: '1080px',
+    caminho: '/admin',
+    noindex: true,
     corpo: `
       <h1>Pedidos</h1>
       <div class="card" style="overflow-x:auto;">

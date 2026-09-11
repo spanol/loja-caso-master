@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /checkout/
+Disallow: /pedido/
+Disallow: /admin
+Disallow: /download/
+
+Sitemap: https://caso-master.subiu.dev/sitemap.xml
