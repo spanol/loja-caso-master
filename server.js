@@ -30,6 +30,7 @@ const upload = multer({
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 function produtoDoTier(tierRaw) {
   const tier = Number(tierRaw);

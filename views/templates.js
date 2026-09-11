@@ -28,16 +28,9 @@ function layout({ titulo, corpo, largura = '720px' }) {
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#efe8d8; --surface:#faf7ef; --surface-2:#e9e1cb; --text:#211d15; --text-muted:#6b6250;
-    --border:#d7ccae; --border-strong:#b9ac85; --accent:#8a2620; --accent-soft:#f0dad4;
-    --gold:#8a6a1c; --gold-soft:#efe2ba; --gold-strong:#5f4a10; --ok:#3c6e3c; --ok-soft:#dfeadf;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#15130f; --surface:#1c1912; --surface-2:#262117; --text:#ece3cd; --text-muted:#a89a7c;
-      --border:#3a3323; --border-strong:#544a34; --accent:#e2837a; --accent-soft:#3a221f;
-      --gold:#dcb95f; --gold-soft:#332a15; --gold-strong:#eecd85; --ok:#7fbf7f; --ok-soft:#1c2f1c;
-    }
+    --bg:#0c0b09; --surface:#18150f; --surface-2:#221d15; --text:#f3f0ea; --text-muted:#b3a890;
+    --border:#332c1f; --border-strong:#4a4030; --accent:#e2534a; --accent-soft:rgba(226,83,74,.16);
+    --gold:#e8c98a; --gold-soft:rgba(232,201,138,.14); --gold-strong:#e8c98a; --ok:#7fbf7f; --ok-soft:rgba(127,191,127,.14);
   }
   *{box-sizing:border-box;}
   body{background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',ui-sans-serif,sans-serif; margin:0; padding:24px 20px 64px;}
@@ -46,12 +39,12 @@ function layout({ titulo, corpo, largura = '720px' }) {
   a{color:var(--accent);}
   .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;}
   .card{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:20px;}
-  .btn{display:inline-block; font-family:'IBM Plex Sans',sans-serif; font-weight:600; font-size:.95rem; padding:12px 20px; border-radius:6px; border:1.5px solid var(--accent); background:var(--accent); color:#fdf6f0; text-decoration:none; cursor:pointer;}
+  .btn{display:inline-block; font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:.95rem; padding:12px 20px; border-radius:6px; border:1.5px solid var(--accent); background:var(--accent); color:#1a1210; text-decoration:none; cursor:pointer;}
   .btn.secondary{background:transparent; color:var(--accent);}
   .btn:disabled{opacity:.5; cursor:not-allowed;}
   .mono{font-family:'IBM Plex Mono',monospace;}
   label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; margin-top:14px;}
-  input[type=text], input[type=email], input[type=file]{width:100%; padding:10px 12px; border-radius:6px; border:1px solid var(--border-strong); background:var(--surface); color:var(--text); font-family:inherit; font-size:.95rem;}
+  input[type=text], input[type=email], input[type=file]{width:100%; padding:10px 12px; border-radius:6px; border:1px solid var(--border-strong); background:var(--surface-2); color:var(--text); font-family:inherit; font-size:.95rem;}
   .muted{color:var(--text-muted); font-size:.9rem; line-height:1.55;}
   .price{font-family:'IBM Plex Mono',monospace; font-size:1.6rem; font-weight:600; color:var(--gold-strong);}
   .tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; padding:3px 9px; border-radius:20px;}
@@ -65,6 +58,20 @@ function layout({ titulo, corpo, largura = '720px' }) {
   th{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; color:var(--text-muted);}
   .pix-box{background:var(--surface-2); border:1px dashed var(--border-strong); border-radius:6px; padding:14px; font-family:'IBM Plex Mono',monospace; font-size:12px; word-break:break-all; margin:14px 0;}
   footer{margin-top:40px; font-size:.8rem; color:var(--text-muted);}
+  .hero{
+    margin:0 0 28px; padding:64px 40px; border-radius:12px; border:1px solid var(--border);
+    background:
+      linear-gradient(to bottom, rgba(9,8,7,.6) 0%, rgba(9,8,7,.4) 45%, rgba(9,8,7,.82) 100%),
+      url('/background.jpg') center / cover no-repeat;
+    text-align:center;
+  }
+  .hero .eyebrow{justify-content:center;}
+  .hero h1{font-size:2.4rem; line-height:1.12; letter-spacing:-.01em;}
+  .hero .stamp{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent); border:2px double var(--accent); padding:8px 14px; border-radius:3px;
+    background:var(--accent-soft); display:inline-block; transform:rotate(-2deg); margin-top:18px;
+  }
 </style>
 </head>
 <body>
@@ -93,9 +100,12 @@ function paginaInicial() {
     titulo: 'Caso Master, o dossie',
     largura: '760px',
     corpo: `
-      <div class="eyebrow">Dossie extraoficial</div>
-      <h1>Caso Master: o mapa completo do processo</h1>
-      <p class="muted">Reconstruimos a rede de atores, a linha do tempo e as ramificacoes do inquerito do Banco Master a partir da leitura integral de 467 documentos publicos dos dois processos em curso no STF. Escolha o pacote que faz sentido para voce.</p>
+      <div class="hero">
+        <div class="eyebrow" style="display:flex;">STF &middot; Pet 15556/DF &amp; Rcl 88121/DF</div>
+        <h1>Caso Master: o mapa completo do processo</h1>
+        <p class="muted" style="max-width:560px; margin:0 auto;">Reconstruimos a rede de atores, a linha do tempo e as ramificacoes do inquerito do Banco Master a partir da leitura integral de 467 documentos publicos dos dois processos em curso no STF.</p>
+        <div class="stamp">Peca outrora sigilosa &middot; hoje publica</div>
+      </div>
       <div class="card" style="border-left:3px solid var(--accent); background:var(--accent-soft);">
         <div class="eyebrow">Atualizacao de 11/09/2026</div>
         <p class="muted" style="color:var(--text);">O presidente do STF, Edson Fachin, forcou a abertura do sigilo no processo: um relatorio da PF revela contatos entre Daniel Vorcaro e um numero salvo como "Alexandre de Moraes Brasilia", alem de um contrato de R$ 131 milhoes com o escritorio da esposa do ministro. Julgamento em plenario previsto para 15/09/2026. Quem compra o plano intermediario ou o acervo completo recebe as atualizacoes sobre esses novos desdobramentos ao longo da proxima semana.</p>
